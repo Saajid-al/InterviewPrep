@@ -2,30 +2,25 @@ from collections import defaultdict
 from typing import List
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        rows = len(prerequisites)
-        cols = len(prerequisites[0])
-        preReq = defaultdict(list)
-        for c, p in prerequisites:
-            preReq[c].append(p)
 
-        seen = set()
-        def cycle(course, seen):
-            if course in seen:
-                return True
-            seen.add(course)
-            for p in preReq[course]:
-                if cycle(p, seen):
-                    return True
-            preReq[course] = []
-            seen.remove(course)
-            return False
-
-
-        for course in range(numCourses):
-            if cycle(course, seen):
+        g = defaultdict(list)
+        for a,b in prerequisites:
+            g[a].append(b) 
+        visitSet = set()
+        def dfs(crs):
+            if crs in visitSet:
                 return False
+            if g[crs] == []: #if there is no prerequisites, lets return an empty list
+                return True
+            visitSet.add(crs)
+            for pre in g[crs]:
+                if not dfs(pre): return False
+            visitSet.remove(crs)
+            g[crs]=[]
+            return True
+        for crs in range(numCourses):
+            if not dfs(crs): return False
         return True
-
 
 def main():
     s = Solution()
