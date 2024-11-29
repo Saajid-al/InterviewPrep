@@ -1,19 +1,22 @@
 class Solution:
-    def numSubseq(self, nums: List[int], target: int) -> int:
-        
+    def numSubseq(self, nums, target):
+        nums.sort()
+
         l = 0 
         r = len(nums)-1
-        numSubSeq = 0
-        min_ele = nums[0]
-        max_ele = nums[0]
-
-        for r in range(len(nums)-1):
-            max_ele = max(max_ele, nums[r])
-            min_ele = min(nums[l], min_ele)
-
-            if min_ele + max_ele >= 9:
-                l+=1
-            numSubSeq+=1
-
+        res = 0
+        mod = int(10 ** 9 + 7)
+        for l in range(len(nums)):
+            while nums[l] + nums[r] > target and r>=l:
+                r-=1
+            if r>=l :
+                res += (2**(r-l))
+                res %= mod
             
-        return numSubSeq
+        return res
+
+def main():
+    s = Solution()
+    print(s.numSubseq([3,5,6,7], 9))
+if __name__ == "__main__":
+    main()
