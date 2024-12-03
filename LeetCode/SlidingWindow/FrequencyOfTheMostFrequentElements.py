@@ -1,25 +1,21 @@
 class Solution:
     def maxFrequency(self, nums, k):
-        maxFreq = 0
-        l = 0
-        temp = 0
-        tempK = 0
-        i = 0
+        nums.sort()
         r = 0
-        for r in range(len(nums)-1):
-            tempK= k
-            l = r 
-            while l >= 0 and tempK >= 0:
-                if nums[l] != nums[r]:
-                    if tempK + nums[l] >= k:
-                        tempK -= nums[r] #5-2 = 3 
-                    if tempK < 0:
-                        break
-                maxFreq = max(maxFreq, r - l + 1)
-                l-=1
-            
-        return maxFreq
+        total = 0
+        l = 0
+        maxTotal = 0
+        while r < len(nums):
+            total += nums[r]
 
+            while (nums[r] * (r - l + 1)> total + k):
+                total-=nums[l]
+                l+=1
+            
+            maxTotal = max(maxTotal, r - l + 1 )
+            r+=1
+
+        return maxTotal
             
         #go through each elemeent, try and see how many duplicates we can create
         #start by usng r. Then we do, while r<=len(nums):
