@@ -1,20 +1,27 @@
-class Solution(object):
-    def threeSum(self, nums):
-        #arr = [] * nums
-        results = []
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
         nums.sort()
-        for i, val in enumerate(nums) :
-            if i > 0 and val == nums[i-1]: #once its sorted, we check if the next index, is equal to the previous(so we can skip)
+        l = 0
+        r = len(nums)-1
+        res = []
+
+        for i, val in enumerate(nums):
+            if i > 0 and val == nums[i-1]:#check current position if it's equal to last to make sure we can skip
                 continue
-            l, r = i + 1, len(nums) - 1 
-            while l < r :
-                if val + nums[l] + nums[r] > 0:  #if its greater than the largest right pointer, decrease right
-                    r -= 1 
-                elif val + nums[l] + nums[r] < 0: #if it's too low, increase left pointer
-                    l += 1 
+            l = i+1 # reset left pointer
+            while (l<r): # while our left pointer is less than our right (went through all combinations)
+                if val + nums[l] + nums[r] > 0: #shift the highest pointer down
+                    r-=1
+                elif val + nums[l] + nums[r] < 0: #increase the lower pointer by 1
+                    l+=1
                 else:
-                    results.append([val,nums[l], nums[r]])
-                    l+= 1
-                    while nums[l] == nums[l-1] and l < r :
-                        l+=1
-        return results
+                    res.append([val, nums[l], nums[r]]) #we're at 0, append it to our list and go to the next val
+                    l+=1
+                while(l < r and nums[l] == nums[l-1]): #while our left pointer and previous is the same we can start skipping
+                    l+=1
+        return res
+
+
+s = Solution()
+print(s.threeSum([-1,0,1,2,-1,-4]))
+#[-4,-1,-1,0,1,2]
