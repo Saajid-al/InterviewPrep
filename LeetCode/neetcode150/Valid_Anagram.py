@@ -11,3 +11,5 @@ class Solution:
 
 s = Solution()
 print(s.isAnagram("anagaram", "nagaram"))
+
+
